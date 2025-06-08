@@ -70,7 +70,7 @@ Features
   * indicationId
   * ICD-10 code
   * date
-  * other notes?
+  * other ifo?
 
 Requirements
 * When should be run, for how long it will wait?
@@ -82,3 +82,10 @@ Features:
 ● Authentication & Authorization
   ○ Users should be able to register and log in.
   ○ Implement role-based access control.
+
+## DB
+Features:
+* Support the data for Parser and Conversor
+* If possible, create triggers that can call or react with code (some queries)
+* CRUD is it possible to use firebase user management
+* Use SP all the time, for hiding real implementation

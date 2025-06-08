@@ -1,0 +1,26 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+Person(user, "User", "Individual needing drug information or ICD-10 mappings")
+
+
+System_Boundary(dailyMedApp, "DailyMed Data Mining Application") {
+    Container(parser, "Parser", "C# Application", "Extracts drug information (SPL XML) from DailyMed.")
+    Container(conversor, "Conversor", "C# Application", "Maps extracted drug indications to ICD-10 codes.")
+    Container(api, "API", "Web API / Service", "Provides programmatic access to the processed drug data.")
+    ContainerDb(database, "Database", "Relational Database", "Stores raw DailyMed data and processed, ICD-10 mapped drug information.")
+}
+
+' External System (DailyMed) - implied by context, but good to show if it's the external source
+System_Ext(dailyMed, "DailyMed", "External drug information source")
+
+Rel(parser,dailyMed,  "Gets drug information (SPL XML)", "HTTPS")
+Rel(parser, database, "Saves raw SPL data", "Writes")
+Rel(parser, conversor, "Notifies of new raw data ready for conversion")
+Rel(conversor, database, "Reads raw indications, Writes mapped ICD-10 codes", "Reads/Writes")
+Rel(api, database, "Retrieves and stores drug data", "Reads/Writes")
+Rel(user, api, "Requests drug information or ICD-10 mappings", "HTTPS")
+
+@enduml
