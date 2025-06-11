@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.4.5
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: dmed
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./dbdata:/var/lib/mysql
+
+  parser:
+    image: dmed-parser:latest
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - ConnectionStrings__Default=server=mysql;port=3306;database=mydatabase;user=myuser;password=mypassword
+    restart: on-failure
+
+  conversor:
+    image: dmed-conversor:latest
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - ConnectionStrings__Default=server=mysql;port=3306;database=mydatabase;user=myuser;password=mypassword
+    restart: on-failure
+
+  api:
+    image: dmed-api:latest
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - ConnectionStrings__Default=server=mysql;port=3306;database=mydatabase;user=myuser;password=mypassword
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    restart: on-failure
+
+volumes:
+  mysql_data:
