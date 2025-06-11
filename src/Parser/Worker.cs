@@ -1,24 +1,36 @@
-namespace Parser
+using Parser.Interfaces;
+
+namespace Parser;
+
+public class Worker : BackgroundService
 {
-    public class Worker : BackgroundService
+    private readonly ILogger<Worker> _logger;
+    private readonly IParser _parser;
+    private readonly FileChangeDetector _detector;
+
+    public Worker(ILogger<Worker> logger,
+        IParser parser,
+        FileChangeDetector detector)
     {
-        private readonly ILogger<Worker> _logger;
+        _logger = logger;
+        _parser = parser;
+        _detector = detector;
+    }
 
-        public Worker(ILogger<Worker> logger)
-        {
-            _logger = logger;
-        }
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        _detector.FileChanged += OnFileChanged;
+        _detector.FileRemoved += OnFileRemoved;
+        return Task.CompletedTask;
+    }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                if (_logger.IsEnabled(LogLevel.Information))
-                {
-                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                }
-                await Task.Delay(1000, stoppingToken);
-            }
-        }
+    private void OnFileChanged(string filePath)
+    {
+        _parser.ParseAsync(new[] { filePath });
+    }
+
+    private void OnFileRemoved(string filePath)
+    {
+        _parser.ParseAsync(new[] { filePath });
     }
 }
