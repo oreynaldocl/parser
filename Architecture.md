@@ -72,7 +72,9 @@ Having different apps/service, each one can be started independtly.
 At least the first time, Parser and Conversor will require a 
 
 # C4 level 1
-Go to file: [C4_L1.puml](./docs/C4_L1.puml)
+![C4 diagaram with system leve - level 1.](./docs/C4_L1.png)
+
+Go to plantUML: [C4_L1.puml](./docs/C4_L1.puml)
 
 # Achitecture reoganized
 After giving my initial idea, Gemini recommend different changes
