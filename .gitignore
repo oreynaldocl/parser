@@ -1,1 +1,46 @@
+# Ignore Visual Studio temporary files, build results, and
+# user-specific files for C# projects
+
+## Build results
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+[Ll]ogs/
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.vs/
+
+## OS generated files
+.DS_Store
+Thumbs.db
+
+## Rider
+.idea/
+*.sln.iml
+
+## NuGet
+*.nupkg
+# The packages folder can be ignored if you use package restore
+**/packages/*
+!**/packages/build/
+!**/packages/repositories.config
+
+## DotCover
+*.dotCover
+
+## Visual Studio Code
+.vscode/
+
+## Others
+*.dbmdl
+*.bak
+*.backup
+*.log
+
+# Ignore Zone.Identifier files
 *Zone.Identifier
