@@ -14,7 +14,8 @@
   * `the focus is shifting away from architecture and code quality (which are still very important) and toward more problem-solving, business/product understanding, and AI usage.` based on this point, the final code it is NOT the MAIN point.
   * I will start researching about the OBJECTIVE and create some examples of the APIs
   * Once I have some examples, I will research where can I get the info
-
+ * Add initial projects
+ * Start with dupixent and test later with other drugs
 
 ## DATA MINING
 ### Research
@@ -44,107 +45,45 @@
   * Where can I find a free open source and with which LLM?
   * What will be my limit using the LLM.
 * Where do I find a free data source of ICD-10
+* Here is the link of GEMINI questions I did: https://g.co/gemini/share/4a8b5bff4e3f
+  * About use LLM and some free data set, I will require time for finding one and LEARN how to use this dataset with the LLM.
+  * I review some course how to send request to LLM for an specific and small dataset.
 
-# Architecture of project
-* Created an initial idea, improvement with AI.
+# Architecture
+Moved information to file [Architecture.md](Architecture.md)
 
-## Parser 
-Features:
-* Read a folder with XMLs files (recursively)
-* Parser at least:
-  * setid
-  * Name
-  * Category
-  * Indications {muchos indications}
-  * Dates when it was saved
-* Save in DB previous information
-* Save info in batches
-* Configuration
-  * DB Information
-  * Folder
+# How to execute
+## Run docker-compose
+The code was build in Visual Studio in Windows. I have installed WSL 2 and Docker.
+1. Open Powershell and go to folder `cd ./docker/`
+2. execute `builder_images.ps1` This will build the 3 images required for the docker-compose
+3. Go to folder `cd compose`
+4. Execute `docker-compose up` , don't use `-d` it is only to validate the services are running.
+5. Add more xml of drugs in `./docker/compose/parserData`, once file changed is detected it should be parsed.
+  * Last Updated: this expected behavior is not working. It is required to review if a permission is requried for WSL folder or docker
 
-Requirements:
-* Detect file changes (runs every X minutes)
-  * Review FileSystemWatcher  if we will work with few or many files
-* Needs be a service or RUN at demand
-* Create a queue of notification 
+# Final notes
+* This way to use LLM and AI, in this moment, it is out of the scope of my knowledge.
+* The amount of tasks requested are too big for the initial hours was commented in the beggining for the challenge.
+* I focused in organization of tasks and thinking in Architecture POV for future improvement.
+* I really enjoyed to request more to AI, the explanation about main concepts and how improved my initial architecture is great.
+* Thanks to this challenge I will go to learn and understand more about LLM and use in some personal projects or courses.
 
-## Conversor
-Features
-* Once the data is saved on tables, starts to review which new items needs to be CONVERTED
-* For each indication request a LLM API
-* Save a 2nd block of data
-  * setid
-  * indicationId
-  * ICD-10 code
-  * date
-  * other ifo?
-* Configuration:
-  * API_KEYs we will need for the LLM
-  * DB Information
-  * Batch processor
-  * Unique/Identifier for the current application
-
-Requirements
-* When should be run, for how long it will wait?
-
-## API
-Features:
-* Implement CRUD operations:
-  * Create, read, update, and delete drug-indication mappings.
-* Authentication & Authorization
-  * Users should be able to register and log in.
-  * Implement role-based access control.
-* Organization:
-  * API layer
-* Configuration:
-  * API_KEYS for DB access
-
-## DB
-Features:
-* Support the data for Parser and Conversor
-* If possible, create triggers that can call or react with code (some queries)
-* CRUD is it possible to use firebase user management
-* Use SP all the time, for hiding real implementation
-
-## Common libraries
-* Models should be common
-* Settings reader
-* Common Log Configuration
-* DB code for CRUD
-
-## Achitecture reoganized
-### DailyMed (External): Source of SPL XML.
-### Parser (C# Service/Daemon):
-Monitors a configured folder (using FileSystemWatcher or scheduled polling).
-Reads and parses SPL XML files.
-Saves SetId, Name, Category, and raw Indications text into the Drugs and Indications tables in the SQL Database.
-After successful DB save, publishes a message to a Message Queue for each new or updated indication record that requires conversion.
-Message Queue (e.g., RabbitMQ, Azure Service Bus):
-Acts as a buffer and decoupler between Parser and Conversor.
-Ensures reliable delivery of messages.
-### Conversor (C# Service/Worker):
-Continuously consumes messages from the Message Queue.
-For each message, it retrieves the raw Indication text from the DB.
-Makes a batched, asynchronous call to the LLM API to get ICD-10 codes.
-Implements robust retry logic with exponential backoff for LLM API failures.
-Updates the Status of the Indication record in the SQL Database (e.g., to CONVERTED or CONVERSION_FAILED).
-Saves the ICD-10 Mappings (ICD-10 code, description, confidence, date) to the Icd10Mappings table in the SQL Database.
-### LLM API (External): Provides the text-to-ICD-10 conversion.
-### API (ASP.NET Core Web API):
-Exposes RESTful endpoints for CRUD operations on drug data and ICD-10 mappings.
-Uses Firebase Authentication for user registration and login.
-Validates Firebase tokens on incoming requests.
-Implements role-based authorization to control access to different data and operations.
-Interacts with the SQL Database (via an ORM like Entity Framework) for data retrieval and storage.
-### SQL Database:
-Stores Drugs, Indications, Icd10Mappings, and potentially Users and Roles tables.
-Optimized with indices for query performance.
-No complex triggers for business logic.
-### User: Interacts with the API to query processed data.
-
-
-# Reason
-Having different apps/service, each one can be started independtly.
-
-At least the first time, Parser and Conversor will require a 
+## Reply to: How would you lead an engineering team to implement and maintain this project?
+I will assume that all of the team are like me, without a knowledge of many or all topics
+* Divide the tasks for researching:
+  * Research about specific topics of the problem.
+    * Deliverable: example of what data is expected to get from the XML and how at least one or 2 indications are converted to ICD-10
+  * Research about LLM and how to use dataset.
+    * Deliverable: example of how a LLM uses a small dataset for reply
+* Prepare and display to team what will be our organization.
+* Define with the team at least:
+  * Common models used around project
+  * Common interfaces or data that will be used between projects
+* Divide the tasks for projects
+* Define the minimum documentation and Unit Tests required
+  * I like QA notes, other team member could review the notes and test or continue an update based on that
+  * A good coverage is always good, but the Unit Tests should validate we process errors
+* We need automation, meanwhile we develop, QA can:
+  * Define which elements can be tested at the beginning
+  * Continue reviewing what are the info required for correctly testing.
