@@ -18,4 +18,9 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Conversor\Conversor.csproj" />
+  </ItemGroup>
+
 </Project>
