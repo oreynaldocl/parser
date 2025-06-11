@@ -34,6 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{4C
 		Database\local_create.sql = Database\local_create.sql
 		Database\README.md = Database\README.md
 		Database\sp.sql = Database\sp.sql
+		Database\sp_reader.sql = Database\sp_reader.sql
 		Database\tables.sql = Database\tables.sql
 	EndProjectSection
 EndProject

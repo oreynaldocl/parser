@@ -1,6 +1,6 @@
 DELIMITER $$
 -- DRUG Store Procedures --------------------------------
-CREATE PROCEDURE InsertDrug(
+CREATE PROCEDURE IF NOT EXISTS InsertDrug(
     IN p_SetId VARCHAR(64),
     IN p_Name VARCHAR(255),
     IN p_Category VARCHAR(128),
@@ -11,7 +11,7 @@ BEGIN
     VALUES (p_SetId, p_Name, p_Category, p_ParsedDate);
 END$$
 
-CREATE PROCEDURE UpdateDrug(
+CREATE PROCEDURE IF NOT EXISTS UpdateDrug(
     IN p_SetId VARCHAR(64),
     IN p_Name VARCHAR(255),
     IN p_Category VARCHAR(128),
@@ -25,7 +25,7 @@ BEGIN
     WHERE SetId = p_SetId;
 END$$
 
-CREATE PROCEDURE RemoveDrug(
+CREATE PROCEDURE IF NOT EXISTS RemoveDrug(
     IN p_SetId VARCHAR(64)
 )
 BEGIN
@@ -43,7 +43,7 @@ BEGIN
 END$$
 
 -- INDICATION Store Procedures --------------------------------
-CREATE PROCEDURE InsertIndication(
+CREATE PROCEDURE IF NOT EXISTS InsertIndication(
     IN p_Id CHAR(36),
     IN p_SetId VARCHAR(64),
     IN p_RawText TEXT,
@@ -60,7 +60,7 @@ BEGIN
     );
 END$$
 
-CREATE PROCEDURE UpdateIndication(
+CREATE PROCEDURE IF NOT EXISTS UpdateIndication(
     IN p_Id CHAR(36),
     IN p_SetId VARCHAR(64),
     IN p_RawText TEXT,
@@ -81,7 +81,7 @@ BEGIN
     WHERE Id = p_Id;
 END$$
 
-CREATE PROCEDURE RemoveIndication(
+CREATE PROCEDURE IF NOT EXISTS RemoveIndication(
     IN p_Id CHAR(36)
 )
 BEGIN
@@ -93,7 +93,7 @@ BEGIN
 END$$
 
 -- ICD10MAPPING Store Procedures --------------------------------
-CREATE PROCEDURE InsertIcd10Mapping(
+CREATE PROCEDURE IF NOT EXISTS InsertIcd10Mapping(
     IN p_Id CHAR(36),
     IN p_IndicationId CHAR(36),
     IN p_Icd10Code VARCHAR(16),
@@ -109,7 +109,7 @@ BEGIN
     );
 END$$
 
-CREATE PROCEDURE UpdateIcd10Mapping(
+CREATE PROCEDURE IF NOT EXISTS UpdateIcd10Mapping(
     IN p_Id CHAR(36),
     IN p_IndicationId CHAR(36),
     IN p_Icd10Code VARCHAR(16),
@@ -128,7 +128,7 @@ BEGIN
     WHERE Id = p_Id;
 END$$
 
-CREATE PROCEDURE RemoveIcd10Mapping(
+CREATE PROCEDURE IF NOT EXISTS RemoveIcd10Mapping(
     IN p_Id CHAR(36)
 )
 BEGIN
