@@ -37,6 +37,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{4C
 		Database\tables.sql = Database\tables.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "compose", "compose", "{BA7B5545-A3DA-4860-A771-204D87D33D51}"
+	ProjectSection(SolutionItems) = preProject
+		..\docker\compose\docker-compose.yml = ..\docker\compose\docker-compose.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +158,7 @@ Global
 		{8E3E1113-FCCC-4E94-BD1E-4875AAC572D3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{69FC1875-1D72-4574-A8E9-293AB3D9E231} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{B5238B7E-3ED4-4142-AD01-9D44694DDEB3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{BA7B5545-A3DA-4860-A771-204D87D33D51} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F594A847-AF8E-4776-A0E5-924DD7A23404}

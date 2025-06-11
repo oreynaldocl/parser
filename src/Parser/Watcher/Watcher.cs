@@ -8,9 +8,11 @@ public class FileChangeDetector : IDisposable
     public event Action<string>? FileChanged;
     public event Action<string>? FileRemoved;
 
-    public FileChangeDetector(string path, ILogger<FileChangeDetector> logger)
+    public FileChangeDetector(string folder, ILogger<FileChangeDetector> logger)
     {
         _logger = logger;
+        // TODO not working when binding folder on docker
+        string path = BuildDataPath(folder);
         _watcher = new FileSystemWatcher(path)
         {
             NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.CreationTime,
@@ -23,6 +25,11 @@ public class FileChangeDetector : IDisposable
         _watcher.Changed += OnChanged;
         _watcher.Renamed += OnRenamed;
         _watcher.Deleted += OnRemoved;
+    }
+
+    internal string BuildDataPath(string folder)
+    {
+        return Path.Combine(Directory.GetCurrentDirectory(), folder);
     }
 
     private void OnChanged(object sender, FileSystemEventArgs e)

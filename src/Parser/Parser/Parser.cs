@@ -55,6 +55,7 @@ public class Parser : IParser
         XmlNode titleNode = doc.SelectSingleNode("/hl7:document/hl7:title", _nsManager);
         ShowNodeInformation(titleNode, "Title");
        
+        // TODO next code requires debug, it is not getting correct information
 
         // 2. Extract Indications and Usage
         // LOINC code for "Indications and Usage" is 34067-9

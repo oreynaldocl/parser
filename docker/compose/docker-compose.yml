@@ -27,6 +27,8 @@ services:
     environment:
       - ConnectionStrings__Default=server=mysql;port=3306;database=mydatabase;user=myuser;password=mypassword
     restart: on-failure
+    volumes:
+      - ./parserData:/app/data
 
   conversor:
     image: dmed-conversor:latest

@@ -8,12 +8,12 @@ public class Program
     {
         var builder = Host.CreateApplicationBuilder(args)
             ;
-        // get from service
-        string path = "D:\\projs\\data";
+
+        string folder = "data";
         builder.Services.AddHostedService<Worker>();
         builder.Services.AddSingleton<IParser, Parser.Parser>();
         builder.Services.AddSingleton<FileChangeDetector>(
-            new FileChangeDetector(path, builder.Services.BuildServiceProvider().GetRequiredService<ILogger<FileChangeDetector>>())
+            new FileChangeDetector(folder, builder.Services.BuildServiceProvider().GetRequiredService<ILogger<FileChangeDetector>>())
         );
 
         var host = builder.Build();
